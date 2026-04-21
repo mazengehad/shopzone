@@ -1,0 +1,242 @@
+<section class="page-shell">
+  <div class="surface-card section-card">
+    <span class="section-kicker">Protected cart</span>
+    <h1>Your Shopping Cart</h1>
+    <p class="muted-copy">
+      Adjust quantities, remove items, and move through a full checkout flow when everything looks
+      right.
+    </p>
+  </div>
+
+  <div *ngIf="errorMessage" class="status-banner danger">{{ errorMessage }}</div>
+
+  <div *ngIf="loading" class="surface-card state-card">Loading cart items...</div>
+
+  <div *ngIf="!loading && cartItems.length === 0" class="surface-card empty-state">
+    <h2>Your cart is empty</h2>
+    <p>Add something from the catalog to see it here.</p>
+    <a class="primary-button" routerLink="/products">Browse Products</a>
+  </div>
+
+  <div *ngIf="!loading && cartItems.length > 0" class="cart-layout">
+    <div class="surface-card cart-table-card">
+      <div class="table-shell">
+        <table>
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Unit Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cartItems; trackBy: trackByCartItemId">
+              <td>{{ item.name }}</td>
+              <td>{{ item.price | number: '1.0-0' }} EGP</td>
+              <td>
+                <input
+                  class="field-input cart-quantity"
+                  type="number"
+                  name="quantity-{{ item.id }}"
+                  [(ngModel)]="item.quantity"
+                  min="1"
+                  (change)="updateQuantity(item)"
+                />
+              </td>
+              <td>{{ item.price * item.quantity | number: '1.0-0' }} EGP</td>
+              <td>
+                <button class="outline-button cart-remove" type="button" (click)="removeItem(item)">
+                  Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <aside class="surface-card cart-summary-card">
+      <span class="section-kicker">Order summary</span>
+      <h2>Total</h2>
+      <p class="cart-summary-card__total">{{ orderTotal | number: '1.0-0' }} EGP</p>
+      <p class="muted-copy">{{ itemCount }} item(s) are ready to move into checkout.</p>
+      <button class="primary-button" type="button" (click)="openCheckout()">Start checkout</button>
+      <a class="outline-button cart-summary-card__secondary" routerLink="/products"
+        >Keep shopping</a
+      >
+    </aside>
+  </div>
+
+  <section *ngIf="isCheckoutOpen && cartItems.length > 0" class="surface-card checkout-wizard">
+    <div class="checkout-wizard__header">
+      <div>
+        <span class="section-kicker">Checkout wizard</span>
+        <h2>Complete your order</h2>
+      </div>
+      <button type="button" class="checkout-wizard__close" (click)="closeCheckout()">Close</button>
+    </div>
+
+    <div class="checkout-steps">
+      <button
+        type="button"
+        class="checkout-step"
+        [class.is-active]="checkoutStep === 1"
+        [class.is-complete]="checkoutStep > 1"
+        (click)="goToStep(1)"
+      >
+        <span>1</span>
+        Shipping
+      </button>
+      <button
+        type="button"
+        class="checkout-step"
+        [class.is-active]="checkoutStep === 2"
+        [class.is-complete]="checkoutStep > 2"
+        (click)="goToStep(2)"
+      >
+        <span>2</span>
+        Payment
+      </button>
+      <button
+        type="button"
+        class="checkout-step"
+        [class.is-active]="checkoutStep === 3"
+        (click)="goToStep(3)"
+      >
+        <span>3</span>
+        Review
+      </button>
+    </div>
+
+    <div class="checkout-panel" *ngIf="checkoutStep === 1">
+      <div class="checkout-panel__content">
+        <label class="field-shell">
+          <span class="field-label">Address</span>
+          <input
+            class="field-input"
+            type="text"
+            name="address"
+            [(ngModel)]="shippingInfo.address"
+            placeholder="12 Nile Street, Apt 8"
+          />
+        </label>
+
+        <label class="field-shell">
+          <span class="field-label">City</span>
+          <input
+            class="field-input"
+            type="text"
+            name="city"
+            [(ngModel)]="shippingInfo.city"
+            placeholder="Cairo"
+          />
+        </label>
+
+        <label class="field-shell">
+          <span class="field-label">Phone</span>
+          <input
+            class="field-input"
+            type="tel"
+            name="phone"
+            [(ngModel)]="shippingInfo.phone"
+            placeholder="01XXXXXXXXX"
+          />
+        </label>
+
+        <small *ngIf="shippingStepInvalid" class="field-error"
+          >Enter a full address, city, and phone number before moving on.</small
+        >
+      </div>
+
+      <div class="checkout-panel__actions">
+        <button class="primary-button" type="button" (click)="nextStep()">
+          Continue to payment
+        </button>
+      </div>
+    </div>
+
+    <div class="checkout-panel" *ngIf="checkoutStep === 2">
+      <div class="payment-options">
+        <label class="payment-card" [class.is-selected]="paymentMethod === 'cash-on-delivery'">
+          <input
+            type="radio"
+            name="paymentMethod"
+            [(ngModel)]="paymentMethod"
+            value="cash-on-delivery"
+          />
+          <strong>Cash on delivery</strong>
+          <span>Pay when your package arrives.</span>
+        </label>
+
+        <label class="payment-card" [class.is-selected]="paymentMethod === 'credit-card'">
+          <input
+            type="radio"
+            name="paymentMethod"
+            [(ngModel)]="paymentMethod"
+            value="credit-card"
+          />
+          <strong>Credit card</strong>
+          <span>Mock card UI for this project flow.</span>
+        </label>
+      </div>
+
+      <div class="checkout-panel__actions">
+        <button class="outline-button" type="button" (click)="previousStep()">Back</button>
+        <button class="primary-button" type="button" (click)="nextStep()">Review order</button>
+      </div>
+    </div>
+
+    <div class="checkout-panel" *ngIf="checkoutStep === 3">
+      <div class="checkout-review">
+        <div class="checkout-review__section">
+          <span class="section-kicker">Shipping</span>
+          <strong>{{ shippingInfo.address }}</strong>
+          <p>{{ shippingInfo.city }} - {{ shippingInfo.phone }}</p>
+        </div>
+
+        <div class="checkout-review__section">
+          <span class="section-kicker">Payment</span>
+          <strong>{{
+            paymentMethod === 'cash-on-delivery' ? 'Cash on delivery' : 'Credit card'
+          }}</strong>
+          <p>
+            {{
+              paymentMethod === 'cash-on-delivery'
+                ? 'Pay at your doorstep.'
+                : 'Card UI selected for this mock checkout.'
+            }}
+          </p>
+        </div>
+
+        <div class="checkout-review__section">
+          <span class="section-kicker">Items</span>
+          <div class="checkout-review__items">
+            <div *ngFor="let item of cartItems" class="checkout-review__item">
+              <span>{{ item.name }}</span>
+              <strong>{{ item.quantity }} x {{ item.price | number: '1.0-0' }} EGP</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-review__section checkout-review__total">
+          <span class="section-kicker">Grand total</span>
+          <strong>{{ orderTotal | number: '1.0-0' }} EGP</strong>
+        </div>
+      </div>
+
+      <div class="checkout-panel__actions">
+        <button class="outline-button" type="button" (click)="previousStep()">Back</button>
+        <button
+          class="primary-button"
+          type="button"
+          (click)="confirmOrder()"
+          [disabled]="isPlacingOrder"
+        >
+          {{ isPlacingOrder ? 'Placing order...' : 'Confirm order' }}
+        </button>
+      </div>
+    </div>
+  </section>
+</section>

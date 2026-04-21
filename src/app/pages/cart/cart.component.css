@@ -1,0 +1,289 @@
+/* ============================================
+   CART PAGE — PREMIUM DARK
+   ============================================ */
+
+.section-card {
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  animation: fadeInUp 0.5s var(--ease-smooth) both;
+}
+
+.section-card h1 {
+  background: var(--gradient-accent);
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.cart-table-card,
+.cart-summary-card,
+.checkout-wizard {
+  padding: 2rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  animation: fadeInUp 0.5s var(--ease-smooth) 0.1s both;
+}
+
+.table-shell {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 1.25rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+th {
+  color: var(--shop-ink-light);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+td {
+  font-weight: 500;
+}
+
+/* Row hover glow */
+tbody tr {
+  transition: background var(--duration-normal);
+}
+
+tbody tr:hover {
+  background: rgba(139, 92, 246, 0.04);
+}
+
+.cart-quantity {
+  min-width: 5rem;
+  max-width: 6rem;
+  min-height: 2.5rem;
+}
+
+.cart-remove {
+  min-width: 6rem;
+  min-height: 2.5rem;
+  color: var(--shop-danger);
+  border-color: rgba(248, 113, 113, 0.15);
+}
+
+.cart-remove:hover {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: var(--shop-danger);
+  color: var(--shop-danger);
+}
+
+/* Summary card */
+.cart-summary-card {
+  display: grid;
+  gap: 1rem;
+  animation-delay: 0.2s;
+}
+
+.cart-summary-card h2 {
+  font-size: 1.5rem;
+}
+
+.cart-summary-card__total {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 1rem 0;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cart-summary-card__secondary {
+  width: 100%;
+}
+
+/* ============================================
+   CHECKOUT WIZARD
+   ============================================ */
+
+.checkout-wizard {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  animation: fadeInUp 0.5s var(--ease-smooth) 0.15s both;
+}
+
+.checkout-wizard__header,
+.checkout-panel__actions,
+.checkout-review__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.checkout-wizard__close {
+  color: var(--shop-ink-light);
+  font-weight: 700;
+  transition: color var(--duration-normal);
+}
+
+.checkout-wizard__close:hover {
+  color: var(--shop-danger);
+}
+
+/* Steps */
+.checkout-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.checkout-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 3rem;
+  border-radius: 999px;
+  border: 1px solid var(--shop-border);
+  color: var(--shop-ink-light);
+  font-weight: 700;
+  transition: all var(--duration-normal) var(--ease-smooth);
+}
+
+.checkout-step span {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all var(--duration-normal);
+}
+
+.checkout-step.is-active,
+.checkout-step.is-complete {
+  border-color: var(--accent-1);
+  background: rgba(139, 92, 246, 0.08);
+  color: var(--shop-ink);
+}
+
+.checkout-step.is-active span,
+.checkout-step.is-complete span {
+  background: var(--gradient-accent);
+  color: white;
+}
+
+.checkout-step.is-active {
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.15);
+}
+
+.checkout-panel {
+  display: grid;
+  gap: 1.25rem;
+}
+
+/* Payment options */
+.payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.payment-card {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.15rem;
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-smooth);
+}
+
+.payment-card input {
+  margin: 0;
+  accent-color: var(--accent-1);
+}
+
+.payment-card:hover {
+  border-color: rgba(139, 92, 246, 0.15);
+}
+
+.payment-card.is-selected {
+  border-color: var(--accent-1);
+  background: rgba(139, 92, 246, 0.08);
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
+}
+
+/* Review */
+.checkout-review {
+  display: grid;
+  gap: 1rem;
+}
+
+.checkout-review__section {
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+}
+
+.checkout-review__section p {
+  margin: 0.45rem 0 0;
+}
+
+.checkout-review__items {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.checkout-review__total strong {
+  display: block;
+  font-size: 1.5rem;
+  margin-top: 0.25rem;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@media (max-width: 920px) {
+  .cart-layout,
+  .payment-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .checkout-steps {
+    grid-template-columns: 1fr;
+  }
+  .checkout-panel__actions {
+    flex-direction: column;
+  }
+  .checkout-panel__actions .primary-button,
+  .checkout-panel__actions .outline-button {
+    width: 100%;
+  }
+}

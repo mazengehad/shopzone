@@ -1,59 +1,41 @@
-# MyNewapp
+# ShopZone Angular Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+A premium, modern E-commerce web application built with Angular 16+ Standalone Architecture. Features a custom hand-coded glassmorphism design system, full Light/Dark mode support, and an end-to-end shopping experience.
 
-## Development server
+## ✨ Features
 
-To start a local development server, run:
+- **Modern Architecture**: Built completely with Angular Standalone Components (`app.routes.ts`, `app.config.ts`) and uses reactive Angular Signals for state management.
+- **Premium UI/UX**: Includes an ultra-premium dark theme, seamless light theme fallback, 3D card tilt effects, glassmorphism overlays, and smooth CSS animations.
+- **Authentication**: Fully protected routes using traditional Angular `CanActivate` Guards and HTTP Interceptors for token/localStorage persistence.
+- **Shopping Flow**: Real-time product filtering, a dedicated cart with quantity-driven subtotal calculation, checkout wizard, and an order history dashboard.
+- **Performance Optimized**: Uses eager/lazy loading principles and native image lazy-loading to ensure the fastest possible rendering.
 
+## 🚀 Getting Started
+
+To run this project locally, you will need the Angular CLI and a mocked JSON Server backend.
+
+### 1. Install Dependencies
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### 2. Start the Mock Backend (JSON Server)
+The application relies on `db.json` for managing users, products, carts, and orders.
 ```bash
-ng generate component component-name
+npx json-server --watch db.json --port 3000
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+### 3. Start the Angular Application
+Open a new terminal window and run the standard Angular development server:
 ```bash
-ng generate --help
+npm start
 ```
+Navigate to `http://localhost:4200/` to explore ShopZone.
 
-## Building
+## 📁 Core Directory Structure
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `/src/app/pages/` - Contains the main routed components (Login, Cart, Products, Orders, etc.)
+- `/src/app/components/` - Shared UI logic (Navbar, Footer, Toast Notifications)
+- `/src/app/services/` - Business logic using modern Angular Signals
+- `/src/app/interceptors/` - Dedicated `auth.interceptor.ts` perfectly handling API authorization
+- `/src/styles.css` - The global design system containing both Light and Dark mode variables.

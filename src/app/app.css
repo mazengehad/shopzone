@@ -1,0 +1,34 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  position: relative;
+  background: var(--shop-bg);
+}
+
+/* Animated gradient accent line at the very top */
+.app-top-accent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-accent);
+  background-size: 200% 100%;
+  animation: gradientShift 4s ease infinite;
+  z-index: 100;
+}
+
+.app-content {
+  position: relative;
+  min-height: calc(100vh - 88px);
+}
+
+@media (max-width: 720px) {
+  .app-content {
+    padding-bottom: 5.25rem;
+  }
+}

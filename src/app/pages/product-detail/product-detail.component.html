@@ -1,0 +1,183 @@
+<section class="page-shell">
+  <button class="back-link" type="button" (click)="goBack()">&larr; Back</button>
+
+  <div *ngIf="loading" class="surface-card state-card">Loading product details...</div>
+  <div *ngIf="!loading && errorMessage" class="status-banner danger">{{ errorMessage }}</div>
+
+  <article *ngIf="product" class="surface-card detail-layout">
+    <div class="detail-layout__media">
+      <img [src]="product.image" [alt]="product.name" />
+    </div>
+
+    <div class="detail-layout__content">
+      <div class="detail-layout__header">
+        <div>
+          <span class="section-kicker">{{ product.category }}</span>
+          <h1>{{ product.name }}</h1>
+        </div>
+
+        <button
+          class="wishlist-button"
+          type="button"
+          (click)="toggleWishlist()"
+          [disabled]="activeWishlist"
+          [class.is-active]="isSaved()"
+        >
+          {{ isSaved() ? 'Saved' : 'Save' }}
+        </button>
+      </div>
+
+      <div class="detail-layout__rating">
+        <span class="stars">&#9733; {{ displayRating | number: '1.1-1' }}</span>
+        <small>{{ reviews.length || 0 }} review(s)</small>
+      </div>
+
+      <p class="detail-layout__price">{{ product.price | number: '1.0-0' }} EGP</p>
+
+      <div class="detail-layout__meta">
+        <div>
+          <span>Stock</span>
+          <strong>{{ product.stock }}</strong>
+        </div>
+        <div>
+          <span>Status</span>
+          <strong [class.out-of-stock]="product.stock === 0">
+            {{ product.stock === 0 ? 'Out of stock' : 'Available' }}
+          </strong>
+        </div>
+      </div>
+
+      <p class="detail-layout__copy">
+        {{
+          product.description ||
+            'A dependable ShopZone pick designed to cover daily needs with comfort and value.'
+        }}
+      </p>
+
+      <label class="field-shell">
+        <span class="field-label">Quantity</span>
+        <input
+          class="field-input quantity-input"
+          type="number"
+          name="quantity"
+          [(ngModel)]="quantity"
+          [min]="1"
+          [max]="product.stock"
+          [disabled]="product.stock === 0"
+        />
+      </label>
+
+      <small *ngIf="quantityInvalid" class="field-error">
+        Please choose a quantity between 1 and {{ product.stock }}.
+      </small>
+      <small *ngIf="product.stock === 0" class="field-error"
+        >This product is currently out of stock.</small
+      >
+
+      <div class="detail-layout__actions">
+        <button
+          class="primary-button detail-layout__cta"
+          type="button"
+          (click)="addToCart()"
+          [disabled]="product.stock === 0 || quantityInvalid || isSubmitting"
+        >
+          {{ isSubmitting ? 'Adding...' : 'Add to cart' }}
+        </button>
+        <button
+          class="outline-button detail-layout__secondary"
+          type="button"
+          (click)="toggleWishlist()"
+          [disabled]="activeWishlist"
+        >
+          {{ isSaved() ? 'Remove from wishlist' : 'Save to wishlist' }}
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <section *ngIf="product" class="surface-card reviews-panel">
+    <div class="reviews-panel__header">
+      <div>
+        <span class="section-kicker">Product reviews</span>
+        <h2>Customer ratings and comments</h2>
+      </div>
+      <div class="reviews-panel__score">
+        <strong>{{ displayRating | number: '1.1-1' }}</strong>
+        <span>Average rating</span>
+      </div>
+    </div>
+
+    <div class="reviews-panel__grid">
+      <div class="reviews-panel__list">
+        <div *ngIf="reviews.length === 0" class="empty-state reviews-empty">
+          <h3>No reviews yet</h3>
+          <p>Be the first shopper to rate this product.</p>
+        </div>
+
+        <article *ngFor="let review of reviews; trackBy: trackByReviewId" class="review-card">
+          <div class="review-card__header">
+            <strong>{{ review.userName }}</strong>
+            <span class="stars">&#9733; {{ review.rating | number: '1.0-0' }}</span>
+          </div>
+          <p>{{ review.comment }}</p>
+          <small>{{ review.createdAt | date: 'mediumDate' }}</small>
+        </article>
+      </div>
+
+      <div class="reviews-panel__form" *ngIf="currentUser(); else signInToReview">
+        <span class="section-kicker">{{
+          currentUserReview ? 'Update your review' : 'Share your review'
+        }}</span>
+        <h3>{{ currentUserReview ? 'Edit your rating' : 'Rate this product' }}</h3>
+        <p class="muted-copy">Logged-in shoppers can leave one rating and update it any time.</p>
+
+        <label class="field-shell">
+          <span class="field-label">Rating</span>
+          <select class="field-input" name="reviewRating" [(ngModel)]="reviewRating">
+            <option *ngFor="let rating of [5, 4, 3, 2, 1]" [ngValue]="rating">
+              {{ rating }} star(s)
+            </option>
+          </select>
+        </label>
+
+        <label class="field-shell">
+          <span class="field-label">Comment</span>
+          <textarea
+            class="field-input review-textarea"
+            name="reviewComment"
+            [(ngModel)]="reviewComment"
+            placeholder="Tell other shoppers what stood out to you."
+          ></textarea>
+        </label>
+
+        <small *ngIf="reviewErrorMessage" class="field-error">{{ reviewErrorMessage }}</small>
+
+        <button
+          class="primary-button"
+          type="button"
+          (click)="submitReview()"
+          [disabled]="isSubmittingReview"
+        >
+          {{ isSubmittingReview ? 'Saving...' : reviewButtonLabel }}
+        </button>
+      </div>
+
+      <ng-template #signInToReview>
+        <div class="reviews-panel__form reviews-panel__signin">
+          <span class="section-kicker">Want to review?</span>
+          <h3>Sign in to share your experience</h3>
+          <p class="muted-copy">
+            Reviews are limited to logged-in customers so we can connect each rating to a shopper
+            profile.
+          </p>
+          <a
+            class="primary-button"
+            [routerLink]="['/login']"
+            [queryParams]="{ returnUrl: router.url }"
+            >Sign in</a
+          >
+        </div>
+      </ng-template>
+    </div>
+  </section>
+</section>

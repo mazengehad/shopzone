@@ -1,0 +1,44 @@
+<section class="page-shell">
+  <div class="surface-card section-card">
+    <span class="section-kicker">Protected Orders</span>
+    <h1>Order History</h1>
+    <p class="muted-copy">
+      Review previous purchases, statuses, dates, and the products included in each order.
+    </p>
+  </div>
+
+  <div *ngIf="errorMessage" class="status-banner danger">{{ errorMessage }}</div>
+  <div *ngIf="loading" class="surface-card state-card">Loading orders...</div>
+
+  <div *ngIf="!loading && orders.length === 0" class="surface-card empty-state">
+    <h2>No orders yet</h2>
+    <p>Your orders will appear here after you place one from the cart page.</p>
+    <a class="primary-button" routerLink="/products">Go to Products</a>
+  </div>
+
+  <div *ngIf="!loading && orders.length > 0" class="orders-stack">
+    <article *ngFor="let order of orders; trackBy: trackByOrderId" class="surface-card order-card">
+      <div class="order-card__header">
+        <div>
+          <span class="section-kicker">Order #{{ order.id }}</span>
+          <h2>{{ order.total | number: '1.0-0' }} EGP</h2>
+          <p class="muted-copy">
+            {{ order.date | date: 'mediumDate' }} · {{ getItemCount(order) }} item(s)
+          </p>
+        </div>
+
+        <span [class]="getStatusClass(order.status)">{{ order.status }}</span>
+      </div>
+
+      <details class="order-card__details">
+        <summary>View items</summary>
+        <div class="order-card__items">
+          <div *ngFor="let item of order.items" class="order-card__item-row">
+            <span>{{ item.name }}</span>
+            <span>{{ item.quantity }} × {{ item.price | number: '1.0-0' }} EGP</span>
+          </div>
+        </div>
+      </details>
+    </article>
+  </div>
+</section>

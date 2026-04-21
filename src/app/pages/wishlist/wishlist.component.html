@@ -1,0 +1,57 @@
+<section class="page-shell">
+  <div class="surface-card section-card">
+    <span class="section-kicker">Saved for later</span>
+    <h1>Your Wishlist</h1>
+    <p class="muted-copy">
+      Keep favorites nearby without crowding the cart. Add them whenever you are ready.
+    </p>
+  </div>
+
+  <div *ngIf="errorMessage" class="status-banner danger">{{ errorMessage }}</div>
+  <div *ngIf="loading" class="surface-card state-card">Loading your wishlist...</div>
+
+  <div *ngIf="!loading && wishlistProducts.length === 0" class="surface-card empty-state">
+    <h2>Your wishlist is empty</h2>
+    <p>Tap the heart on any product card to save it for later.</p>
+    <a class="primary-button" routerLink="/products">Browse products</a>
+  </div>
+
+  <div *ngIf="!loading && wishlistProducts.length > 0" class="wishlist-grid">
+    <article
+      *ngFor="let item of wishlistProducts; trackBy: trackByProductId"
+      class="wishlist-card surface-card"
+    >
+      <a [routerLink]="['/products', item.productId]" class="wishlist-card__media">
+        <img [src]="item.image" [alt]="item.name" />
+      </a>
+
+      <div class="wishlist-card__body">
+        <span class="section-kicker">{{ item.category }}</span>
+        <a [routerLink]="['/products', item.productId]" class="wishlist-card__title">{{
+          item.name
+        }}</a>
+        <p class="wishlist-card__price">{{ item.price | number: '1.0-0' }} EGP</p>
+
+        <div class="wishlist-card__actions">
+          <button type="button" class="outline-button" (click)="removeFromWishlist(item)">
+            Remove
+          </button>
+          <button
+            type="button"
+            class="primary-button"
+            (click)="addToCart(item)"
+            [disabled]="activeProductId === item.productId || item.product?.stock === 0"
+          >
+            {{
+              activeProductId === item.productId
+                ? 'Adding...'
+                : item.product?.stock === 0
+                  ? 'Out of stock'
+                  : 'Add to cart'
+            }}
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

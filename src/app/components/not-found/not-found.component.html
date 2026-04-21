@@ -1,0 +1,12 @@
+<section class="page-shell">
+  <div class="surface-card not-found-card">
+    <span class="section-kicker">404</span>
+    <h1>We could not find that page.</h1>
+    <p>
+      The page you tried to open does not exist in ShopZone. Head back to the product catalog and
+      keep browsing.
+    </p>
+    <a *ngIf="authService.isLoggedIn()" class="primary-button" routerLink="/products">Back to Products</a>
+    <a *ngIf="!authService.isLoggedIn()" class="primary-button" routerLink="/login">Back to Login</a>
+  </div>
+</section>

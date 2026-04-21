@@ -1,0 +1,22 @@
+<div class="toast-stack" *ngIf="toasts().length > 0">
+  <article
+    *ngFor="let toast of toasts()"
+    class="toast-card"
+    [class.is-success]="toast.tone === 'success'"
+    [class.is-error]="toast.tone === 'error'"
+    [class.is-info]="toast.tone === 'info'"
+  >
+    <div class="toast-card__content">
+      <strong>{{ toast.title }}</strong>
+      <p>{{ toast.message }}</p>
+    </div>
+    <button
+      type="button"
+      class="toast-card__dismiss"
+      (click)="dismiss(toast.id)"
+      aria-label="Dismiss notification"
+    >
+      x
+    </button>
+  </article>
+</div>

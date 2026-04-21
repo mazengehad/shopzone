@@ -1,7 +1,8 @@
-import { platformBrowser } from '@angular/platform-browser';
-import { AppModule } from './app/app-module';
+import 'zone.js';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app';
 
-platformBrowser().bootstrapModule(AppModule, {
-  
-})
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, appConfig).catch((error: unknown) => {
+  console.error(error);
+});

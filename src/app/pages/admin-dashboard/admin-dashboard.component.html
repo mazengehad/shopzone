@@ -1,0 +1,140 @@
+<section class="page-shell">
+  <div class="admin-hero surface-card">
+    <div>
+      <span class="section-kicker">Admin dashboard</span>
+      <h1>ShopZone control room</h1>
+      <p class="muted-copy">
+        This simple admin view confirms that admin login works and gives a quick snapshot of users,
+        orders, and inventory.
+      </p>
+    </div>
+
+    <div class="admin-hero__badge" *ngIf="currentUser() as currentUser">
+      <span>Signed in as</span>
+      <strong>{{ currentUser.name }}</strong>
+      <small>{{ currentUser.role }}</small>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="status-banner danger">{{ errorMessage }}</div>
+  <div *ngIf="loading" class="surface-card state-card">Loading admin dashboard...</div>
+
+  <div *ngIf="!loading" class="admin-grid">
+    <section class="admin-stats">
+      <article class="surface-card stat-card">
+        <span class="section-kicker">Users</span>
+        <strong>{{ users.length }}</strong>
+        <small>{{ adminCount }} admin account(s)</small>
+      </article>
+
+      <article class="surface-card stat-card">
+        <span class="section-kicker">Products</span>
+        <strong>{{ products.length }}</strong>
+        <small>{{ lowStockProducts.length }} low stock item(s)</small>
+      </article>
+
+      <article class="surface-card stat-card">
+        <span class="section-kicker">Orders</span>
+        <strong>{{ orders.length }}</strong>
+        <small>{{ pendingOrders }} pending</small>
+      </article>
+
+      <article class="surface-card stat-card">
+        <span class="section-kicker">Revenue</span>
+        <strong>{{ totalRevenue | number: '1.0-0' }} EGP</strong>
+        <small>Mock total from placed orders</small>
+      </article>
+    </section>
+
+    <section class="surface-card admin-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="section-kicker">Recent orders</span>
+          <h2>Latest activity</h2>
+        </div>
+      </div>
+
+      <div *ngIf="recentOrders.length === 0" class="empty-state admin-empty">
+        <h3>No orders yet</h3>
+        <p>Orders will appear here after customers complete checkout.</p>
+      </div>
+
+      <div *ngIf="recentOrders.length > 0" class="list-stack">
+        <article *ngFor="let order of recentOrders; trackBy: trackByOrderId" class="list-row">
+          <div>
+            <strong>Order #{{ order.id }}</strong>
+            <p>{{ getUserName(order.userId) }} · {{ getItemCount(order) }} item(s)</p>
+          </div>
+          <div class="list-row__meta">
+            <span class="status-pill" [class]="order.status">{{ order.status }}</span>
+            <strong>{{ order.total | number: '1.0-0' }} EGP</strong>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="surface-card admin-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="section-kicker">Users</span>
+          <h2>Registered accounts</h2>
+        </div>
+      </div>
+
+      <div class="table-shell">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of latestUsers; trackBy: trackByUserId">
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="role-pill" [class.is-admin]="user.role === 'admin'">{{
+                  user.role
+                }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="surface-card admin-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="section-kicker">Inventory</span>
+          <h2>Low stock watch</h2>
+        </div>
+      </div>
+
+      <div *ngIf="lowStockProducts.length === 0" class="empty-state admin-empty">
+        <h3>Stock looks healthy</h3>
+        <p>No products are currently at or below the low stock threshold.</p>
+      </div>
+
+      <div *ngIf="lowStockProducts.length > 0" class="list-stack">
+        <article
+          *ngFor="let product of lowStockProducts; trackBy: trackByProductId"
+          class="list-row"
+        >
+          <div>
+            <strong>{{ product.name }}</strong>
+            <p>{{ product.category }}</p>
+          </div>
+          <div class="list-row__meta">
+            <span class="stock-pill" [class.is-out]="product.stock === 0">{{
+              product.stock === 0 ? 'Out of stock' : product.stock + ' left'
+            }}</span>
+            <strong>{{ product.price | number: '1.0-0' }} EGP</strong>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</section>

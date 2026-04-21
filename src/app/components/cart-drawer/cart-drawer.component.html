@@ -1,0 +1,51 @@
+<div class="cart-drawer__backdrop" *ngIf="isOpen()" (click)="close()">
+  <aside class="cart-drawer" (click)="$event.stopPropagation()">
+    <header class="cart-drawer__header">
+      <div>
+        <span class="section-kicker">Quick Cart</span>
+        <h2>{{ itemCount() }} item(s)</h2>
+      </div>
+      <button
+        type="button"
+        class="cart-drawer__close"
+        (click)="close()"
+        aria-label="Close cart drawer"
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </header>
+
+    <div *ngIf="isLoading()" class="cart-drawer__state">Refreshing your cart...</div>
+
+    <div *ngIf="!isLoading() && items().length === 0" class="cart-drawer__state">
+      Your cart is empty for now.
+    </div>
+
+    <div *ngIf="!isLoading() && items().length > 0" class="cart-drawer__items">
+      <article *ngFor="let item of items(); trackBy: trackByCartItemId" class="cart-drawer__item">
+        <div>
+          <strong>{{ item.name }}</strong>
+          <p>{{ item.quantity }} x {{ item.price | number: '1.0-0' }} EGP</p>
+        </div>
+
+        <button type="button" class="cart-drawer__remove" (click)="removeItem(item)" aria-label="Remove item">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </button>
+      </article>
+    </div>
+
+    <footer class="cart-drawer__footer">
+      <div class="cart-drawer__summary">
+        <span>Total</span>
+        <strong>{{ orderTotal() | number: '1.0-0' }} EGP</strong>
+      </div>
+      <a class="primary-button" routerLink="/cart" (click)="close()">Review cart and checkout</a>
+    </footer>
+  </aside>
+</div>

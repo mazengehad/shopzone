@@ -1,0 +1,187 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Ahmed Hassan",
+      "email": "ahmed@shopzone.com",
+      "password": "12345678",
+      "role": "user"
+    },
+    {
+      "id": 2,
+      "name": "Sara Adel",
+      "email": "sara@shopzone.com",
+      "password": "abcdefgh",
+      "role": "admin"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Nova Wireless Headphones",
+      "price": 2499,
+      "category": "Electronics",
+      "stock": 12,
+      "rating": 4.6,
+      "image": "/img/headphones.png",
+      "description": "Noise-reducing wireless headphones built for long commutes, focus sessions, and crisp everyday listening."
+    },
+    {
+      "id": 2,
+      "name": "Pulse Smart Watch",
+      "price": 3199,
+      "category": "Electronics",
+      "stock": 7,
+      "rating": 4.4,
+      "image": "/img/smartwatch.png",
+      "description": "A lightweight smartwatch with fitness tracking, message previews, and a clean all-day display."
+    },
+    {
+      "id": 3,
+      "name": "Harbor Linen Shirt",
+      "price": 899,
+      "category": "Fashion",
+      "stock": 18,
+      "rating": 4.2,
+      "image": "/img/shirt.png",
+      "description": "Breathable linen texture with a relaxed cut that works for both casual mornings and polished evenings."
+    },
+    {
+      "id": 4,
+      "name": "Stride Runner Sneakers",
+      "price": 1599,
+      "category": "Fashion",
+      "stock": 10,
+      "rating": 4.7,
+      "image": "/img/sneakers.png",
+      "description": "Supportive sneakers with cushioned soles and a flexible upper designed for active daily wear."
+    },
+    {
+      "id": 5,
+      "name": "Cedar Table Lamp",
+      "price": 1199,
+      "category": "Home",
+      "stock": 9,
+      "rating": 4.5,
+      "image": "/img/lamp.png",
+      "description": "A soft-glow lamp with a warm wood base and fabric shade that upgrades bedrooms and desks instantly."
+    },
+    {
+      "id": 6,
+      "name": "Nest Storage Basket Set",
+      "price": 699,
+      "category": "Home",
+      "stock": 20,
+      "rating": 4.1,
+      "image": "/img/basket.png",
+      "description": "Woven storage baskets sized for shelves, towels, toys, and quick room resets."
+    },
+    {
+      "id": 7,
+      "name": "Core Yoga Mat",
+      "price": 549,
+      "category": "Sports",
+      "stock": 16,
+      "rating": 4.3,
+      "image": "/img/yogamat.png",
+      "description": "A non-slip yoga mat with dependable grip and balanced cushioning for home workouts or studio sessions."
+    },
+    {
+      "id": 8,
+      "name": "Sprint Bottle",
+      "price": 299,
+      "category": "Sports",
+      "stock": 0,
+      "rating": 4.0,
+      "image": "/img/bottle.png",
+      "description": "An insulated bottle that keeps drinks cool through long workdays, workouts, and errands."
+    }
+  ],
+  "cart": [
+    {
+      "id": 1,
+      "userId": 1,
+      "productId": 3,
+      "quantity": 2,
+      "name": "Harbor Linen Shirt",
+      "price": 899
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "productId": 7,
+      "quantity": 1,
+      "name": "Core Yoga Mat",
+      "price": 549
+    }
+  ],
+  "wishlist": [
+    {
+      "id": 1,
+      "userId": 1,
+      "productId": 5,
+      "name": "Cedar Table Lamp",
+      "price": 1199,
+      "image": "/img/lamp.png",
+      "category": "Home"
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "userId": 1,
+      "total": 2798,
+      "status": "delivered",
+      "date": "2026-03-28T10:30:00.000Z",
+      "items": [
+        {
+          "productId": 5,
+          "name": "Cedar Table Lamp",
+          "quantity": 1,
+          "price": 1199
+        },
+        {
+          "productId": 4,
+          "name": "Stride Runner Sneakers",
+          "quantity": 1,
+          "price": 1599
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "total": 2499,
+      "status": "processing",
+      "date": "2026-04-01T14:15:00.000Z",
+      "items": [
+        {
+          "productId": 1,
+          "name": "Nova Wireless Headphones",
+          "quantity": 1,
+          "price": 2499
+        }
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "userId": 1,
+      "productId": 1,
+      "userName": "Ahmed Hassan",
+      "rating": 5,
+      "comment": "Crisp sound and a comfortable fit even after long work sessions.",
+      "createdAt": "2026-04-02T09:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "productId": 4,
+      "userName": "Sara Adel",
+      "rating": 4,
+      "comment": "Great everyday sneakers with solid cushioning for long walks.",
+      "createdAt": "2026-04-03T14:20:00.000Z"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+/* ============================================
+   TOAST NOTIFICATIONS — PREMIUM DARK
+   ============================================ */
+
+:host {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 80;
+  pointer-events: none;
+}
+
+.toast-stack {
+  display: grid;
+  gap: 0.85rem;
+  width: min(24rem, calc(100vw - 2rem));
+}
+
+.toast-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  padding: 1rem 1rem 1rem 1.15rem;
+  border-radius: 16px;
+  background: rgba(20, 20, 30, 0.95);
+  color: white;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+  animation: toast-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Accent glow line at left */
+.toast-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+
+.toast-card.is-success {
+  background: rgba(10, 40, 30, 0.95);
+  border-color: rgba(52, 211, 153, 0.1);
+}
+
+.toast-card.is-success::before {
+  background: var(--shop-success);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.4);
+}
+
+.toast-card.is-error {
+  background: rgba(40, 10, 10, 0.95);
+  border-color: rgba(248, 113, 113, 0.1);
+}
+
+.toast-card.is-error::before {
+  background: var(--shop-danger);
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.4);
+}
+
+.toast-card.is-info {
+  background: rgba(20, 20, 30, 0.95);
+  border-color: rgba(139, 92, 246, 0.1);
+}
+
+.toast-card.is-info::before {
+  background: var(--accent-1);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+}
+
+.toast-card__content {
+  display: grid;
+  gap: 0.35rem;
+  padding-left: 0.5rem;
+}
+
+.toast-card__content strong {
+  font-size: 0.95rem;
+}
+
+.toast-card__content p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.88rem;
+}
+
+.toast-card__dismiss {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: color var(--duration-normal);
+}
+
+.toast-card__dismiss:hover {
+  color: white;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    right: 0.75rem;
+    left: 0.75rem;
+    bottom: 5rem;
+  }
+  .toast-stack {
+    width: 100%;
+  }
+}

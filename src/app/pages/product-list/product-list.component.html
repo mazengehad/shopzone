@@ -1,0 +1,120 @@
+<section class="page-shell">
+  <div class="catalog-hero">
+    <div class="catalog-hero__content">
+      <span class="section-kicker">New Collection</span>
+      <h1>Discover Premium<br>Picks for You</h1>
+      <p>
+        Elevate your lifestyle with our curated essentials. Fast checkout, saved favorites, and a new look.
+      </p>
+      <button class="primary-button hero-cta" (click)="searchInput.focus()">Start Shopping</button>
+    </div>
+    <div class="catalog-hero__visual">
+      <div class="hero-shape hero-shape-1"></div>
+      <div class="hero-shape hero-shape-2"></div>
+      <img src="assets/images/hero-composition.jpg" alt="Premium ShopZone Catalog" class="hero-image" loading="eager">
+    </div>
+  </div>
+
+  <div class="catalog-controls" id="catalog-controls">
+    <div class="search-bar">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        #searchInput
+        type="text"
+        name="searchTerm"
+        [ngModel]="searchTerm"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search our catalog..."
+      />
+    </div>
+
+    <div class="category-pills">
+      <button
+        *ngFor="let category of categories"
+        type="button"
+        class="category-pill"
+        [class.is-active]="selectedCategory === category"
+        (click)="selectCategory(category)"
+      >
+        {{ category }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="status-banner danger">{{ errorMessage }}</div>
+
+  <div *ngIf="loading" class="catalog-skeleton">
+    <div class="skeleton-card" *ngFor="let _ of [1, 2, 3, 4, 5, 6]"></div>
+  </div>
+
+  <div *ngIf="!loading && filteredProducts.length === 0" class="empty-state">
+    <h2>No products found</h2>
+    <p>Try a different search term or switch the category filter back to All.</p>
+  </div>
+
+  <div *ngIf="!loading && filteredProducts.length > 0" class="product-grid">
+    <article
+      *ngFor="let product of filteredProducts; trackBy: trackByProductId"
+      class="product-card"
+    >
+      <div class="product-card__media-wrapper">
+        <a class="product-card__media" [routerLink]="['/products', product.id]">
+          <img [src]="product.image" [alt]="product.name" />
+        </a>
+
+        <div class="product-card__actions-bar">
+          <button
+            class="wishlist-toggle"
+            type="button"
+            (click)="toggleWishlist(product)"
+            [disabled]="activeWishlistProductId === product.id"
+            [class.is-active]="isSaved(product.id)"
+            [attr.aria-pressed]="isSaved(product.id)"
+            [title]="isSaved(product.id) ? 'Remove' : 'Save'"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [class.filled]="isSaved(product.id)">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+          
+          <button
+            class="add-to-cart-quick primary-button"
+            type="button"
+            (click)="addToCart(product)"
+            [disabled]="product.stock === 0 || activeProductId === product.id"
+            [title]="product.stock === 0 ? 'Out of stock' : 'Add to cart'"
+          >
+            <span *ngIf="activeProductId !== product.id">Add to Cart</span>
+            <span *ngIf="activeProductId === product.id">...</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="product-card__body">
+        <div class="product-card__meta">
+          <span>{{ product.category }}</span>
+          <span class="stars">&#9733; {{ product.rating | number: '1.1-1' }}</span>
+        </div>
+
+        <a [routerLink]="['/products', product.id]" class="product-card__title">
+          {{ product.name }}
+        </a>
+
+        <div class="product-card__footer">
+          <span class="product-card__price">{{ product.price | number: '1.0-0' }} EGP</span>
+          <span *ngIf="product.stock === 0" class="stock-label">Out of Stock</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

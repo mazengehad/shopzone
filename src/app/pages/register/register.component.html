@@ -1,0 +1,121 @@
+<section class="page-shell auth-shell">
+  <div class="auth-layout">
+    <div class="surface-card auth-panel auth-panel--accent">
+      <span class="section-kicker">Join ShopZone</span>
+      <h1>Create an account and start shopping smarter.</h1>
+      <p>
+        Register once and you will be able to manage your profile, track your orders, and keep
+        products in your personal cart.
+      </p>
+
+      <div class="auth-highlights">
+        <div>
+          <strong>Personal profile</strong>
+          <span>Your saved user information is loaded straight from localStorage.</span>
+        </div>
+        <div>
+          <strong>Order history</strong>
+          <span>Every new order appears in your protected orders page after checkout.</span>
+        </div>
+        <div>
+          <strong>Simple validation</strong>
+          <span>Reactive forms keep email formatting and password confirmation under control.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="surface-card auth-panel auth-panel--form">
+      <span class="section-kicker">Register</span>
+      <h2>Open your account</h2>
+      <p class="muted-copy">
+        Fill in your details below. New accounts are created with the role of user.
+      </p>
+
+      <div *ngIf="errorMessage" class="status-banner danger">{{ errorMessage }}</div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+        <label class="field-shell">
+          <span class="field-label">Full Name</span>
+          <input class="field-input" type="text" formControlName="name" placeholder="Mazen Gehad" />
+          <small *ngIf="nameControl.touched && nameControl.hasError('required')" class="field-error">
+            Full name is required
+          </small>
+          <small *ngIf="nameControl.touched && nameControl.hasError('minlength')" class="field-error">
+            Minimum 3 characters
+          </small>
+        </label>
+
+        <label class="field-shell">
+          <span class="field-label">Email</span>
+          <input class="field-input" type="email" formControlName="email" placeholder="you@example.com" />
+          <small *ngIf="emailControl.touched && emailControl.hasError('required')" class="field-error">
+            Email is required
+          </small>
+          <small *ngIf="emailControl.touched && emailControl.hasError('email')" class="field-error">
+            Enter a valid email
+          </small>
+        </label>
+
+        <label class="field-shell">
+          <span class="field-label">Password</span>
+          <input class="field-input" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+            placeholder="Minimum 8 characters" style="padding-right: 2.5rem" />
+          <button type="button" class="input-icon-btn" tabindex="-1" (click)="togglePassword()">
+            <svg *ngIf="!showPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg *ngIf="showPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+              </path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+          <small *ngIf="passwordControl.touched && passwordControl.hasError('required')" class="field-error">
+            Password is required
+          </small>
+          <small *ngIf="passwordControl.touched && passwordControl.hasError('minlength')" class="field-error">
+            Minimum 8 characters
+          </small>
+        </label>
+
+        <label class="field-shell">
+          <span class="field-label">Confirm Password</span>
+          <input class="field-input" [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword" placeholder="Repeat password" style="padding-right: 2.5rem" />
+          <button type="button" class="input-icon-btn" tabindex="-1" (click)="toggleConfirmPassword()">
+            <svg *ngIf="!showConfirmPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg *ngIf="showConfirmPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+              </path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+          <small *ngIf="confirmPasswordControl.touched && confirmPasswordControl.hasError('required')"
+            class="field-error">
+            Confirm password is required
+          </small>
+          <small *ngIf="passwordsDoNotMatch" class="field-error">Passwords do not match</small>
+        </label>
+
+        <button class="primary-button auth-submit" type="submit" [disabled]="registerForm.invalid || isSubmitting">
+          {{ isSubmitting ? 'Creating Account...' : 'Register' }}
+        </button>
+      </form>
+
+      <p class="auth-footer-copy">
+        Already registered?
+        <a class="link-inline" routerLink="/login">Go to login</a>
+      </p>
+    </div>
+  </div>
+</section>
